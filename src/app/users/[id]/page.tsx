@@ -35,7 +35,7 @@ export default function UserEditPage() {
 
   useEffect(() => {
     if (!id) return;
-    getUserById(id)
+    getUserById(id as string)
       .then((u: User) => {
         setInitialValues({
           name: u.name,
@@ -50,7 +50,7 @@ export default function UserEditPage() {
   const handleDelete = async () => {
     if (!id) return;
     if (confirm("Tem certeza que deseja remover este usuário?")) {
-      await deleteUser(id);
+      await deleteUser(id as string);
       router.push("/users");
     }
   };
@@ -79,7 +79,7 @@ export default function UserEditPage() {
                   email: values.email,
                   role: values.role,
                 };
-                await updateUser(id!, payload);
+                await updateUser(id as string, payload);
                 router.push("/users");
               } catch (err: any) {
                 setErrors({ email: "Erro ao salvar. Tente novamente." });

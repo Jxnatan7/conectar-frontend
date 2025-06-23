@@ -50,7 +50,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, [user]);
 
-  if (loading || !initialValues) {
+  if (loading || !initialValues || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <p className="text-gray-700">{error || "Carregando perfil..."}</p>
