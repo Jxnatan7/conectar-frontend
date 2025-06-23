@@ -24,7 +24,6 @@ export type UpdateUserDto = {
   name: string;
   email: string;
   role: UserRole;
-  token: string;
 };
 
 export type FilterQuery = {
