@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Conectar Frontend (Next.js)
 
-## Getting Started
+Este projeto é a aplicação frontend desenvolvida em **Next.js** com **TypeScript**, que consome a API NestJS do sistema **Conectar**. A interface oferece: autenticação, gerenciamento de usuários (para gerentes) e perfil do usuário.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Recursos
+
+- Autenticação via JWT
+- Páginas de Login e Logout
+- Página de Criação de Usuários (acesso apenas para managers)
+- Página de Listagem de Usuários Ativos (apenas managers)
+- Página de Listagem de Usuários Inativos (apenas managers)
+- Página de Perfil do Usuário Atual
+- Consumo de API REST NestJS para todas as operações
+- Proteção de rotas baseada em roles
+- Estilização com TailwindCSS
+
+## Pré-requisitos
+
+- Node.js >= 18
+- npm ou yarn
+- A API backend deve estar rodando e acessível
+
+## Instalação
+
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/Jxnatan7/conectar-frontend.git
+   cd conectar-frontend
+   ```
+
+2. Instale as dependências:
+
+   ```bash
+   npm install
+   # ou yarn install
+   ```
+
+## Variáveis de Ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto com as seguintes variáveis:
+
+```ini
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `NEXT_PUBLIC_API_URL`: URL base da sua API NestJS
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts Disponíveis
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando          | Descrição                              |
+| ---------------- | -------------------------------------- |
+| `npm run dev`    | Inicia o servidor de desenvolvimento   |
+| `npm run build`  | Gera o build otimizado para produção   |
+| `npm run start`  | Inicia a aplicação no modo de produção |
+| `npm run lint`   | Executa ESlint e corrige problemas     |
+| `npm run format` | Formata o código com Prettier          |
 
-## Learn More
+## Estrutura de Pastas
 
-To learn more about Next.js, take a look at the following resources:
+```text
+src/
+├── app/
+│   │── login/page.tsx
+│   │── profile/page.tsx
+│   │── signup/page.tsx
+│   ├── inactive/page.tsx     # listagem de usuários inativos
+│   ├── users/
+│   │   ├── page.tsx        # listagem de usuários ativos
+│   │   ├── [id]/page.tsx        # listagem de usuários ativos
+│   │   └── create/page.tsx       # criação de usuário
+│   ├── profile/page.tsx         # perfil do usuário logado
+│   └── layout.tsx            # wrapper global (contexto, providers)
+├── components/             # componentes compartilhados
+├── contexts/               # Context API ou hooks de auth
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Páginas e Rotas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Auth (Login / Logout)
 
-## Deploy on Vercel
+- **/auth/login**: formulario de login (email, senha). Após autenticar, armazena token e redireciona conforme role.
+- **/auth/logout**: finaliza sessão e limpa armazenamento.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Gerenciamento de Usuários (Manager)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **/users**: lista usuários ativos com paginação e busca.
+- **/users/inactive**: lista usuários inativos.
+- **/users/create**: formulário para criar novo usuário (role, nome, email, senha).
+
+### Perfil do Usuário
+
+- **/profile**: exibe dados do usuário autenticado e permite edição de perfil.
+
+## Proteção de Rotas
+
+- Implementado um componente para checar se o usuário está autenticado e, opcionalmente, se possui role `manager`.
+- Páginas de _users_ (index, inactive, create) só são acessíveis se `role === manager`.
+- Rotas públicas: `/auth/login`, assets estáticos.

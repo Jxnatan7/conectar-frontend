@@ -1,4 +1,3 @@
-// src/app/users/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -67,6 +66,14 @@ export default function UsersListPage() {
 
       <main className="flex-1 p-6">
         <div className="max-w-7xl mx-auto space-y-6">
+          <div>
+            <button
+              onClick={() => router.push("/inactive")}
+              className="text-blue-600"
+            >
+              Usuáriops inativos
+            </button>
+          </div>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
             <div className="flex flex-wrap items-center space-x-2">
               <select
